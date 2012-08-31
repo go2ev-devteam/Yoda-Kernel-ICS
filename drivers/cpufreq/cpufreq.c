@@ -1057,7 +1057,7 @@ static int cpufreq_add_dev(struct sys_device *sys_dev)
     if (found)
         {
         /* Calling the driver can overwrite policy frequencies again */
-        dprintk("Overriding policy max and min with sibling settings\n");
+        printk("Overriding policy max and min with sibling settings\n");
         policy->min = cp->min;
         policy->max = cp->max;
         policy->user_policy.min = cp->user_policy.min;
