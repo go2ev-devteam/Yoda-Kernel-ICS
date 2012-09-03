@@ -3706,3 +3706,4 @@ module_exit(wm8994_driver_exit);
 MODULE_DESCRIPTION("ASoC WM8994 driver");
 MODULE_AUTHOR("Shaju Abraham shaju.abraham@samsung.com");
 MODULE_LICENSE("GPL");
+

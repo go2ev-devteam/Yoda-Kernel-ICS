@@ -1869,3 +1869,4 @@ void voodoo_hook_wm8994_pcm_probe(struct snd_soc_codec *codec_)
 	// initialize eq_band_values[] from default codec EQ values
 	load_current_eq_values();
 }
+

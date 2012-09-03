@@ -3844,3 +3844,4 @@ u16 wm8994_get_codec_gain(u32 mode, u16 device, u16 reg)
 
 	return gain;
 }
+
