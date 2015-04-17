@@ -383,7 +383,7 @@ static int spdif_set_sample_rate(struct audio_driver_state *state,
 			"%s: failed to enable spdif_clk clock\n", __func__);
 		return -EIO;
 	}
-	pr_info("%s: spdif_clk rate %ld\n", __func__, clk_get_rate(spdif_clk));
+	pr_debug("%s: spdif_clk rate %ld\n", __func__, clk_get_rate(spdif_clk));
 
 	spdif_writel(state->spdif_base, ch_sta[0], SPDIF_CH_STA_TX_A_0);
 	spdif_writel(state->spdif_base, ch_sta[1], SPDIF_CH_STA_TX_B_0);
@@ -481,7 +481,7 @@ static void setup_dma_tx_request(struct tegra_dma_req *req,
 static int setup_dma(struct audio_driver_state *ads)
 {
 	int rc, i;
-	pr_info("%s\n", __func__);
+	pr_debug("%s\n", __func__);
 
 	/* setup audio playback */
 	for (i = 0; i < ads->out.num_bufs; i++) {
@@ -523,7 +523,7 @@ fail_tx:
 static void tear_down_dma(struct audio_driver_state *ads)
 {
 	int i;
-	pr_info("%s\n", __func__);
+	pr_debug("%s\n", __func__);
 
 
 	tegra_dma_free_channel(ads->out.dma_chan);
@@ -620,7 +620,7 @@ static void stop_dma_playback(struct audio_stream *aos)
 			spin < 100) {
 		udelay(10);
 		if (spin++ > 50)
-			pr_info("%s: spin %d\n", __func__, spin);
+			pr_debug("%s: spin %d\n", __func__, spin);
 	}
 	if (spin == 100)
 		pr_warn("%s: spinny\n", __func__);
@@ -972,7 +972,7 @@ static ssize_t __attr_fifo_atn_write(struct audio_driver_state *ads,
 	}
 
 	*fifo_lvl = lvl;
-	pr_info("%s: fifo level %d\n", __func__, *fifo_lvl);
+	pr_debug("%s: fifo level %d\n", __func__, *fifo_lvl);
 
 	return size;
 }
@@ -1041,7 +1041,7 @@ static int tegra_spdif_probe(struct platform_device *pdev)
 	struct resource *res;
 	struct audio_driver_state *state;
 
-	pr_info("%s\n", __func__);
+	pr_debug("%s\n", __func__);
 
 	state = kzalloc(sizeof(*state), GFP_KERNEL);
 	if (!state)

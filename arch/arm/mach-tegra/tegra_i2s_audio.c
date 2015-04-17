@@ -262,7 +262,7 @@ static int i2s_set_channel_bit_count(unsigned long base,
 
 	val = bitcnt;
 	if (bitclk % (2 * sampling)) {
-		pr_info("%s: enabling non-symmetric mode\n", __func__);
+		pr_debug("%s: enabling non-symmetric mode\n", __func__);
 		val |= I2S_I2S_TIMING_NON_SYM_ENABLE;
 	}
 
@@ -719,7 +719,7 @@ static void setup_dma_rx_request(struct tegra_dma_req *req,
 static int setup_dma(struct audio_driver_state *ads, int mask)
 {
 	int rc, i;
-	pr_info("%s\n", __func__);
+	pr_debug("%s\n", __func__);
 
 	if (mask & TEGRA_AUDIO_ENABLE_TX) {
 		/* setup audio playback */
@@ -796,7 +796,7 @@ fail_tx:
 static void tear_down_dma(struct audio_driver_state *ads, int mask)
 {
 	int i;
-	pr_info("%s\n", __func__);
+	pr_debug("%s\n", __func__);
 
 	if (mask & TEGRA_AUDIO_ENABLE_TX) {
 		tegra_dma_free_channel(ads->out.dma_chan);
@@ -945,7 +945,7 @@ static void stop_dma_playback(struct audio_stream *aos)
 			spin < 100) {
 		udelay(10);
 		if (spin++ > 50)
-			pr_info("%s: spin %d\n", __func__, spin);
+			pr_debug("%s: spin %d\n", __func__, spin);
 	}
 	if (spin == 100)
 		pr_warn("%s: spinny\n", __func__);
@@ -992,7 +992,7 @@ static void stop_dma_recording(struct audio_stream *ais)
 			spin < 100) {
 		udelay(10);
 		if (spin++ > 50)
-			pr_info("%s: spin %d\n", __func__, spin);
+			pr_debug("%s: spin %d\n", __func__, spin);
 	}
 	if (spin == 100)
 		pr_warn("%s: spinny\n", __func__);
@@ -1246,7 +1246,7 @@ static long tegra_audio_in_ioctl(struct file *file,
 			rc = -EINVAL;
 		}
 		if (!rc) {
-			pr_info("%s: setting input sampling rate to %d, %s\n",
+			pr_debug("%s: setting input sampling rate to %d, %s\n",
 				__func__, cfg.rate,
 				cfg.stereo ? "stereo" : "mono");
 			ads->in_config = cfg;
@@ -1651,7 +1651,7 @@ static ssize_t __attr_fifo_atn_write(struct audio_driver_state *ads,
 	}
 
 	*fifo_lvl = lvl;
-	pr_info("%s: fifo level %d\n", __func__, *fifo_lvl);
+	pr_debug("%s: fifo level %d\n", __func__, *fifo_lvl);
 
 	return size;
 }
@@ -1727,7 +1727,7 @@ static int tegra_audio_probe(struct platform_device *pdev)
 	struct clk *i2s_clk, *dap_mclk;
 	struct audio_driver_state *state;
 
-	pr_info("%s\n", __func__);
+	pr_debug("%s\n", __func__);
 
 	state = kzalloc(sizeof(*state), GFP_KERNEL);
 	if (!state)
@@ -1790,7 +1790,7 @@ static int tegra_audio_probe(struct platform_device *pdev)
 			__func__);
 		return -EIO;
 	}
-	pr_info("%s: i2s_clk rate %ld\n", __func__, clk_get_rate(i2s_clk));
+	pr_debug("%s: i2s_clk rate %ld\n", __func__, clk_get_rate(i2s_clk));
 
 	dap_mclk = tegra_get_clock_by_name(state->pdata->dap_clk);
 	if (!dap_mclk) {
