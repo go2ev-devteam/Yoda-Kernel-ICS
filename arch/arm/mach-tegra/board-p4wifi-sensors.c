@@ -116,14 +116,14 @@ static int  bh1721fvc_light_sensor_reset(void)
 #if 0
 	err = gpio_direction_output(GPIO_LIGHT_SENSOR_DVI, 0);
 	if (err) {
-		printk(KERN_ERR "Failed to make the light sensor gpio(dvi)"
+		pr_debug(KERN_ERR "Failed to make the light sensor gpio(dvi)"
 			" low (%d)\n", err);
 		return err;
 	}
 	udelay(2);
 	err = gpio_direction_output(GPIO_LIGHT_SENSOR_DVI, 1);
 	if (err) {
-		printk(KERN_ERR "Failed to make the light sensor gpio(dvi)"
+		pr_debug(KERN_ERR "Failed to make the light sensor gpio(dvi)"
 			" high (%d)\n", err);
 		return err;
 	}
@@ -149,13 +149,13 @@ static int p3_light_sensor_init(void)
 	tegra_gpio_enable(GPIO_LIGHT_SENSOR_DVI);
 	err = gpio_request(GPIO_LIGHT_SENSOR_DVI, "LIGHT_SENSOR_DVI");
 	if (err) {
-		printk(KERN_ERR "Failed to request the light "
+		pr_debug(KERN_ERR "Failed to request the light "
 			" sensor gpio (%d)\n", err);
 		return err;
 	}
 	err = gpio_direction_output(GPIO_LIGHT_SENSOR_DVI, 1);
 	if (err) {
-		printk(KERN_ERR "Failed to make the light sensor gpio(dvi)"
+		pr_debug(KERN_ERR "Failed to make the light sensor gpio(dvi)"
 			" high (%d)\n", err);
 		return err;
 	}

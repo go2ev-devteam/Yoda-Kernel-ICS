@@ -120,7 +120,7 @@ static int brcm_init_wlan_mem(void)
 	wlan_static_scan_buf1 = kmalloc(65536, GFP_KERNEL);
 	if (!wlan_static_scan_buf1)
 		goto err_mem_alloc;
-	printk(KERN_INFO"%s: WIFI MEM Allocated\n", __func__);
+	pr_debug(KERN_INFO"%s: WIFI MEM Allocated\n", __func__);
 	return 0;
 
  err_mem_alloc:
@@ -294,7 +294,7 @@ static int p3_wifi_status_register(
 		void (*callback)(int card_present, void *dev_id),
 		void *dev_id)
 {
-	printk(KERN_INFO "%s: start\n", __func__);
+	pr_debug(KERN_INFO "%s: start\n", __func__);
 	if (wifi_status_cb)
 		return -EAGAIN;
 	wifi_status_cb = callback;
@@ -304,7 +304,7 @@ static int p3_wifi_status_register(
 
 static int p3_wifi_set_carddetect(int val)
 {
-	printk(KERN_INFO "%s: start\n", __func__);
+	pr_debug(KERN_INFO "%s: start\n", __func__);
 	pr_debug("%s: %d\n", __func__, val);
 	if (wifi_status_cb)
 		wifi_status_cb(val, wifi_status_cb_devid);
@@ -315,7 +315,7 @@ static int p3_wifi_set_carddetect(int val)
 
 static int p3_wifi_power(int on)
 {
-	printk(KERN_INFO "%s: start\n", __func__);
+	pr_debug(KERN_INFO "%s: start\n", __func__);
 	pr_debug("%s: %d\n", __func__, on);
 
 	gpio_set_value(GPIO_WLAN_EN, on);
@@ -331,14 +331,14 @@ static int p3_wifi_power(int on)
 
 static int p3_wifi_reset(int on)
 {
-	printk(KERN_INFO "%s: start\n", __func__);
+	pr_debug(KERN_INFO "%s: start\n", __func__);
 	pr_debug("%s: do nothing\n", __func__);
 	return 0;
 }
 
 static int __init p3_wifi_init(void)
 {
-	printk(KERN_INFO "%s: start\n", __func__);
+	pr_debug(KERN_INFO "%s: start\n", __func__);
 	wifi_32k_clk = clk_get_sys(NULL, "blink");
 	if (IS_ERR(wifi_32k_clk)) {
 		pr_err("%s: unable to get blink clock\n", __func__);
@@ -362,7 +362,7 @@ static int __init p3_wifi_init(void)
 }
 int __init p3_sdhci_init(void)
 {
-	printk(KERN_INFO "%s: start\n", __func__);
+	pr_debug(KERN_INFO "%s: start\n", __func__);
 	platform_device_register(&tegra_sdhci_device3);
 	platform_device_register(&tegra_sdhci_device0);
 

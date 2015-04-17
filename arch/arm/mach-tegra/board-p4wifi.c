@@ -190,7 +190,7 @@ static int write_bootloader_message(char *cmd, int mode)
 	filp = filp_open(MISC_DEVICE, O_WRONLY, 0);
 
 	if (IS_ERR(filp)) {
-		pr_info("failed to open MISC : '%s'.\n", MISC_DEVICE);
+		pr_debug("failed to open MISC : '%s'.\n", MISC_DEVICE);
 		return 0;
 	}
 
@@ -203,9 +203,9 @@ static int write_bootloader_message(char *cmd, int mode)
 	set_fs(oldfs);
 
 	if (ret < 0)
-		pr_info("failed to write on MISC\n");
+		pr_debug("failed to write on MISC\n");
 	else
-		pr_info("command : %s written on MISC\n", bootmsg.command);
+		pr_debug("command : %s written on MISC\n", bootmsg.command);
 
 	fput(filp);
 	filp_close(filp, NULL);
@@ -463,7 +463,7 @@ static void __init uart_debug_init(void)
 	struct clk *c;
 
 	/* UARTB is the debug port. */
-	pr_info("Selecting UARTB as the debug console\n");
+	pr_debug("Selecting UARTB as the debug console\n");
 	p4_uart_devices[0] = &debug_uartb_device;
 	debug_uart_port_base = ((struct plat_serial8250_port *)(
 			debug_uartb_device.dev.platform_data))->mapbase;
@@ -473,7 +473,7 @@ static void __init uart_debug_init(void)
 	if (!IS_ERR_OR_NULL(debug_uart_clk)) {
 		rate = ((struct plat_serial8250_port *)(
 			debug_uartb_device.dev.platform_data))->uartclk;
-		pr_info("The debug console clock name is %s\n",
+		pr_debug("The debug console clock name is %s\n",
 						debug_uart_clk->name);
 		c = tegra_get_clock_by_name("pll_p");
 		if (IS_ERR_OR_NULL(c))
@@ -625,7 +625,7 @@ cleanup:
 
 static void sec_jack_set_micbias_state(bool on)
 {
-	printk(KERN_DEBUG
+	pr_debug(KERN_DEBUG
 		"Board P4 : Enterring sec_jack_set_micbias_state = %d\n", on);
 	if (system_rev < 0x3)
 		gpio_set_value(TEGRA_GPIO_PH3, on);
@@ -711,7 +711,7 @@ static int sec_jack_get_adc_value(void)
 		ret = 2000; /* temporary fix: adc_get_value(0); */
 	else
 		ret = stmpe811_adc_get_value(4);
-	printk(KERN_DEBUG
+	pr_debug(KERN_DEBUG
 		"Board P4 : Enterring sec_jack_get_adc_value = %d\n", ret);
 	return  ret;
 }
@@ -792,7 +792,7 @@ void tegra_acc_power(u8 token, bool active)
 			}
 		}
 	}
-	pr_info("Board P4 : %s token : (%d,%d) %s\n", __func__,
+	pr_debug("Board P4 : %s token : (%d,%d) %s\n", __func__,
 		token, active, enable ? "on" : "off");
 }
 static int p3_kbc_keycode[] = {
@@ -852,7 +852,7 @@ static void tegra_otg_en(int active)
 
 	active = !!active;
 	gpio_direction_output(gpio_otg_en, active);
-	pr_info("Board P4 : %s = %d\n", __func__, active);
+	pr_debug("Board P4 : %s = %d\n", __func__, active);
 }
 
 static void tegra_usb_ldo_en(int active, int instance)
@@ -866,7 +866,7 @@ static void tegra_usb_ldo_en(int active, int instance)
 		return;
 	}
 
-	pr_info("Board P4 : %s=%d instance=%d present regulator=%d\n",
+	pr_debug("Board P4 : %s=%d instance=%d present regulator=%d\n",
 		 __func__, active, instance, usb_data.usb_regulator_on[instance]);
 	mutex_lock(&usb_data.ldo_en_lock);
 
@@ -931,7 +931,7 @@ static bool check_samsung_charger(void)
 			sum += stmpe811_adc_get_value(6);
 
 		vol_1 = sum / 2;
-		pr_info("%s: samsung_charger_adc = %d !!\n", __func__, vol_1);
+		pr_debug("%s: samsung_charger_adc = %d !!\n", __func__, vol_1);
 
 		if ((vol_1 > 800) && (vol_1 < 1800))
 			result = true;
@@ -946,7 +946,7 @@ static bool check_samsung_charger(void)
 	regulator_disable(reg);
 	regulator_put(reg);
 
-	pr_info("%s: returning %d\n", __func__, result);
+	pr_debug("%s: returning %d\n", __func__, result);
 	return result;
 }
 
@@ -975,7 +975,7 @@ void p3_bat_gpio_init(void)
 	gpio_direction_input(GPIO_FUEL_ALRT);
 	tegra_gpio_enable(GPIO_FUEL_ALRT);
 
-	pr_info("Battery GPIO initialized.\n");
+	pr_debug("Battery GPIO initialized.\n");
 
 }
 
@@ -1134,7 +1134,7 @@ static struct platform_device *p3_devices[] __initdata = {
 
 static void sec_s5k5ccgx_init(void)
 {
-	printk(KERN_DEBUG "%s,,\n", __func__);
+	pr_debug(KERN_DEBUG "%s,,\n", __func__);
 
 	tegra_gpio_enable(GPIO_CAM_PMIC_EN1);	/*3M_CORE_1.2V*/
 	tegra_gpio_enable(GPIO_CAM_PMIC_EN2);	/*CAM_AVDD2.8V*/
@@ -1186,7 +1186,7 @@ static void P3_s5k5ccgx_flash_off()
 
 static void p3_s5k5ccgx_power_on(void)
 {
-	printk(KERN_DEBUG "%s,,\n", __func__);
+	pr_debug(KERN_DEBUG "%s,,\n", __func__);
 	gpio_set_value(GPIO_CAM_R_nSTBY, 0);/*3M STBY low*/
 	gpio_set_value(GPIO_CAM_R_nRST, 0); /*3M nRST low*/
 	gpio_set_value(GPIO_CAM_F_nSTBY, 0); /* 2M STBY low*/
@@ -1218,7 +1218,7 @@ static void p3_s5k5ccgx_power_on(void)
 
 static void p3_s5k5ccgx_power_off(void)
 {
-	printk(KERN_DEBUG "%s,,\n", __func__);
+	pr_debug(KERN_DEBUG "%s,,\n", __func__);
 	msleep(3);
 	gpio_set_value(GPIO_CAM_R_nRST, 0); /*3M nRST Low*/
 	udelay(100);
@@ -1240,7 +1240,7 @@ static void p3_s5k5ccgx_power_off(void)
 		msleep(800);
 	else {
 		msleep(200);
-		printk(KERN_DEBUG "p3_s5k5ccgx_power_off\
+		pr_debug(KERN_DEBUG "p3_s5k5ccgx_power_off\
 			msleep--------200ms  system_rev = %d\n", system_rev);
 	}
 }
@@ -1274,7 +1274,7 @@ static void aat1274_write(int value)
 static int P3_s5k5ccgx_flash(int enable)
 {
 	/* Turn main flash on or off by asserting a value on the EN line. */
-	printk(KERN_DEBUG "========== flash enable = %d\n", enable);
+	pr_debug(KERN_DEBUG "========== flash enable = %d\n", enable);
 	gpio_set_value(GPIO_CAM_FLASH_EN, enable);
 
 	return 0;
@@ -1284,7 +1284,7 @@ static int P3_s5k5ccgx_af_assist(int enable)
 {
 	/* Turn assist light on or off by asserting a value on the EN_SET
 	 * line. The default illumination level of 1/7.3 at 100% is used */
-	printk(KERN_DEBUG "========== flash af_assist =========== %d\n",\
+	pr_debug(KERN_DEBUG "========== flash af_assist =========== %d\n",\
 			enable);
 #if 0
 	gpio_set_value(GPIO_CAM_FLASH_EN, enable);
@@ -1342,7 +1342,7 @@ struct tegra_pingroup_config s5k5bbgx_mclk = {
 
 void p3_s5k5bbgx_power_on(void)
 {
-	printk(KERN_DEBUG "%s,,\n", __func__);
+	pr_debug(KERN_DEBUG "%s,,\n", __func__);
 	gpio_set_value(GPIO_CAM_R_nSTBY, 0); /*3M STBY low*/
 	gpio_set_value(GPIO_CAM_R_nRST, 0); /*3M nRST low*/
 	gpio_set_value(GPIO_CAM_F_nSTBY, 0); /* 2M STBY low*/
@@ -1424,7 +1424,7 @@ static int __init p3_camera_init(void)
 
 static void p3_touch_exit_hw(void)
 {
-	pr_info("p3_touch_exit_hw\n");
+	pr_debug("p3_touch_exit_hw\n");
 	gpio_free(GPIO_TOUCH_INT);
 	gpio_free(GPIO_TOUCH_RST);
 	gpio_free(GPIO_TOUCH_EN);
@@ -1458,7 +1458,7 @@ static void p3_register_touch_callbacks(struct mxt_callbacks *cb)
 /*p3 touch : atmel_mxt1386*/
 static void p3_touch_init_hw(void)
 {
-	pr_info("p3_touch_init_hw\n");
+	pr_debug("p3_touch_init_hw\n");
 	gpio_request(GPIO_TOUCH_EN, "TOUCH_EN");
 	gpio_request(GPIO_TOUCH_RST, "TOUCH_RST");
 	gpio_request(GPIO_TOUCH_INT, "TOUCH_INT");
@@ -1845,7 +1845,7 @@ static void p4_check_hwrev(void)
 	if (i == rev_no)
 		pr_warn("%s: Valid revision NOT found! Latest one will be assigned!\n", __func__);
 
-	pr_info("%s: system_rev = %d (gpio value = 0x%02x)\n", __func__, system_rev, value);
+	pr_debug("%s: system_rev = %d (gpio value = 0x%02x)\n", __func__, system_rev, value);
 }
 
 static void p3_power_off(void)
@@ -1887,7 +1887,7 @@ static ssize_t store_sec_debug_level(struct device *dev,
 	int sec_debug_level = 0;
 	memcpy(&sec_debug_level, buf, 4);
 
-	printk("%s %x\n", __func__, sec_debug_level);
+	pr_debug("%s %x\n", __func__, sec_debug_level);
 
 	if (!(sec_debug_level == KERNEL_SEC_DEBUG_LEVEL_LOW
 			|| sec_debug_level == KERNEL_SEC_DEBUG_LEVEL_MID
@@ -1906,7 +1906,7 @@ static DEVICE_ATTR(sec_debug_level, 0644, show_sec_debug_level, store_sec_debug_
 #if defined(CONFIG_TDMB) || defined(CONFIG_TDMB_MODULE)
 static void tdmb_gpio_on(void)
 {
-	printk(KERN_DEBUG "TDMB tdmb_gpio_on\n");
+	pr_debug(KERN_DEBUG "TDMB tdmb_gpio_on\n");
 
 	nvhost_t20_boost_2d(true);
 
@@ -1925,7 +1925,7 @@ static void tdmb_gpio_on(void)
 
 static void tdmb_gpio_off(void)
 {
-	printk(KERN_DEBUG "TDMB tdmb_gpio_off\n");
+	pr_debug(KERN_DEBUG "TDMB tdmb_gpio_off\n");
 
 	gpio_set_value(GPIO_TDMB_RST, 0);
 	usleep_range(1000, 1000);
@@ -1970,7 +1970,7 @@ static struct spi_board_info tegra_spi_tdmb_devices[] __initdata = {
 
 static int __init tdmb_dev_init(void)
 {
-	printk(KERN_DEBUG "TDMB tdmb_dev_init\n");
+	pr_debug(KERN_DEBUG "TDMB tdmb_dev_init\n");
 
 	tegra_gpio_enable(GPIO_TDMB_RST);
 	tegra_gpio_enable(GPIO_TDMB_EN);
@@ -2056,7 +2056,7 @@ static void __init tegra_p3_init(void)
 	struct device *platform = p3_devices[0]->dev.parent;
 	ret = device_create_file(platform, &dev_attr_sec_debug_level);
 	if (ret)
-		printk("Fail to create sec_debug_level file\n");
+		pr_debug("Fail to create sec_debug_level file\n");
 #endif
 #if defined(CONFIG_TDMB) || defined(CONFIG_TDMB_MODULE)
 	tdmb_dev_init();
@@ -2107,7 +2107,7 @@ MACHINE_END
 
 static int __init setup_cmc623_type(char *str)
 {
-    printk("~~~~~~~~~~~~~setup cmc623 type ~~~~~~~~~~~~~~\n");
+    pr_debug("~~~~~~~~~~~~~setup cmc623 type ~~~~~~~~~~~~~~\n");
     cmc623_current_type = 1;
 	return 0;
 }

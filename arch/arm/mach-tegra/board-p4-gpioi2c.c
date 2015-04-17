@@ -236,7 +236,7 @@ static struct i2c_board_info sec_gpio_i2c7_info[] = {
 
 static void wm8994_set_mic_bias(bool on)
 {
-	pr_info("Board P3 : Enterring wm8994_set_mic_bias\n");
+	pr_debug("Board P3 : Entering wm8994_set_mic_bias\n");
 	gpio_set_value(GPIO_MICBIAS_EN, on);
 }
 
@@ -256,7 +256,7 @@ static void tegra_set_dap_connection(bool on)
 {
 	int reg_val;
 
-	pr_info("Board P4 : %s : %d\n", __func__, on);
+	pr_debug("Board P4 : %s : %d\n", __func__, on);
 	if (on) {
 		/* DAP1 */
 		reg_val = das_readl(APB_MISC_DAS_DAP_CTRL_SEL_0);

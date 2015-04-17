@@ -517,13 +517,13 @@ int __init p3_panel_init(void)
 	res->end = tegra_fb2_start + tegra_fb2_size - 1;
 #endif
 if (cmc623_current_type) {
-	printk("CMC623 INFO : Integrated CMC623F From FUJITSU\n");
+	pr_debug("CMC623 INFO : Integrated CMC623F From FUJITSU\n");
 	p3_disp1_device.dev.platform_data = &p3_disp1_pdata_pclk_76;
-	/*printk("CMC623 INFO : Set PLCK to %d\n",\
+	/*pr_debug("CMC623 INFO : Set PLCK to %d\n",\
 	p3_disp1_device.dev.platform_data.default_out.modes.pclk); */
 } else {
-	printk(KERN_INFO "CMC623 INFO : Integrated CMC623 From S.LSI\n");
-	/*printk("CMC623 INFO : Set PLCK to %d\n",\
+	pr_debug(KERN_INFO "CMC623 INFO : Integrated CMC623 From S.LSI\n");
+	/*pr_debug("CMC623 INFO : Set PLCK to %d\n",\
 	p3_disp1_device.dev.platform_data.default_out.modes.pclk); */
 }
 

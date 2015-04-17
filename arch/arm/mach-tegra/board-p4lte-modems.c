@@ -601,7 +601,7 @@ static u8 *cbp_edpram_remap_mem_region(struct sromc_cfg *cfg)
 		pr_err("[MDM] <%s> dpram base ioremap fail\n", __func__);
 		return NULL;
 	}
-	pr_info("[MDM] <%s> DPRAM VA=0x%08X\n", __func__, (int)dp_base);
+	pr_debug("[MDM] <%s> DPRAM VA=0x%08X\n", __func__, (int)dp_base);
 
 	cbp_edpram_ctrl.dp_base = (u8 __iomem *)dp_base;
 	cbp_edpram_ctrl.dp_size = dp_size;
@@ -677,7 +677,7 @@ static void init_hw_setting_p4(void)
 	if (system_rev > 0x0A) {
 		if (gpio_is_valid(GPIO_PHONE_ON)) {
 			if (gpio_request(GPIO_PHONE_ON, "dpram/GPIO_PHONE_ON"))
-				printk(KERN_ERR "request fail GPIO_PHONE_ON\n");
+				pr_debug(KERN_ERR "request fail GPIO_PHONE_ON\n");
 			gpio_direction_output(GPIO_PHONE_ON, GPIO_LEVEL_LOW);
 		}
 		gpio_set_value(GPIO_PHONE_ON, GPIO_LEVEL_LOW);
@@ -685,7 +685,7 @@ static void init_hw_setting_p4(void)
 		if (gpio_is_valid(GPIO_CP_ON_REV05)) {
 			if (gpio_request(GPIO_CP_ON_REV05,
 					"dpram/GPIO_PHONE_ON"))
-				printk(KERN_ERR "request fail GPIO_PHONE_ON\n");
+				pr_debug(KERN_ERR "request fail GPIO_PHONE_ON\n");
 			gpio_direction_output(GPIO_CP_ON_REV05, GPIO_LEVEL_LOW);
 		}
 		gpio_set_value(GPIO_CP_ON_REV05, GPIO_LEVEL_LOW);
@@ -693,7 +693,7 @@ static void init_hw_setting_p4(void)
 
 	if (gpio_is_valid(GPIO_PHONE_RST_N)) {
 		if (gpio_request(GPIO_PHONE_RST_N, "dpram/GPIO_PHONE_RST_N"))
-			printk(KERN_ERR "request fail GPIO_PHONE_RST_N\n");
+			pr_debug(KERN_ERR "request fail GPIO_PHONE_RST_N\n");
 		reg = readl(IO_ADDRESS(0x6000d108));
 		writel(reg | (0x01 << 6), IO_ADDRESS(0x6000d108));
 		gpio_direction_output(GPIO_PHONE_RST_N, GPIO_LEVEL_LOW);
@@ -702,7 +702,7 @@ static void init_hw_setting_p4(void)
 	if (gpio_is_valid(GPIO_VIA_PS_HOLD_OFF)) {
 		if (gpio_request(GPIO_VIA_PS_HOLD_OFF,
 					"dpram/GPIO_VIA_PS_HOLD_OFF"))
-			printk(KERN_ERR "request fail GPIO_VIA_PS_HOLD_OFF\n");
+			pr_debug(KERN_ERR "request fail GPIO_VIA_PS_HOLD_OFF\n");
 		reg = readl(IO_ADDRESS(0x6000d184));
 		writel(reg | (0x1 << 5), IO_ADDRESS(0x6000d184));
 		gpio_direction_output(GPIO_VIA_PS_HOLD_OFF, GPIO_LEVEL_HIGH);
@@ -979,7 +979,7 @@ void set_host_states(int type)
 {
 	int spin = 20;
 
-	pr_info("%s(%d)\n", __func__, type);
+	pr_debug("%s(%d)\n", __func__, type);
 
 	if (!type) {
 		gpio_direction_output(lte_modem_data.gpio_host_active, type);
